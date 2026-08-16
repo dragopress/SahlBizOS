@@ -12,9 +12,15 @@ import { PaymentsView } from './components/sales/PaymentsView';
 import { ProductsView } from './components/products/ProductsView';
 import { InventoryMovementsView } from './components/products/InventoryMovementsView';
 import { SuppliersView } from './components/purchases/SuppliersView';
+import { PurchaseOrdersView } from './components/purchases/PurchaseOrdersView';
 import { ExpensesView } from './components/purchases/ExpensesView';
-import { ProjectsView } from './components/projects/ProjectsView';
 import { BankingView } from './components/banking/BankingView';
+import { ProjectsView } from './components/projects/ProjectsView';
+import { TasksView } from './components/tasks/TasksView';
+import { CalendarView } from './components/calendar/CalendarView';
+import { DocumentsView } from './components/documents/DocumentsView';
+import { ReportsView } from './components/reports/ReportsView';
+import { AutomationView } from './components/automation/AutomationView';
 import { TaxReportView } from './components/tax/TaxReportView';
 import { AiAssistantView } from './components/ai/AiAssistantView';
 import { SettingsView } from './components/settings/SettingsView';
@@ -30,12 +36,16 @@ import { PaymentRecorderModal } from './components/sales/PaymentRecorderModal';
 import { ProductBuilderModal } from './components/products/ProductBuilderModal';
 import { StockMovementModal } from './components/products/StockMovementModal';
 import { SupplierBuilderModal } from './components/purchases/SupplierBuilderModal';
+import { PurchaseOrderBuilderModal } from './components/purchases/PurchaseOrderBuilderModal';
 import { ExpenseBuilderModal } from './components/purchases/ExpenseBuilderModal';
-import { OcrScannerModal } from './components/ai/OcrScannerModal';
 import { ProjectBuilderModal } from './components/projects/ProjectBuilderModal';
+import { TaskBuilderModal } from './components/tasks/TaskBuilderModal';
+import { DocumentUploadModal } from './components/documents/DocumentUploadModal';
+import { AutomationRuleBuilderModal } from './components/automation/AutomationRuleBuilderModal';
+import { OcrScannerModal } from './components/ai/OcrScannerModal';
 
 const AppContent: React.FC = () => {
-  const { currentView, activeModal, modalData, setActiveModal } = useApp();
+  const { currentView, activeModal, modalPayload, setActiveModal } = useApp();
 
   const renderView = () => {
     switch (currentView) {
@@ -57,12 +67,26 @@ const AppContent: React.FC = () => {
         return <InventoryMovementsView />;
       case 'suppliers':
         return <SuppliersView />;
+      case 'purchases':
+        return <PurchaseOrdersView />;
       case 'expenses':
         return <ExpensesView />;
+      case 'bank_accounts':
+        return <BankingView initialTab="accounts" />;
+      case 'cashflow':
+        return <BankingView initialTab="forecast" />;
       case 'projects':
         return <ProjectsView />;
-      case 'banking':
-        return <BankingView />;
+      case 'tasks':
+        return <TasksView />;
+      case 'calendar':
+        return <CalendarView />;
+      case 'documents':
+        return <DocumentsView />;
+      case 'reports':
+        return <ReportsView />;
+      case 'automation':
+        return <AutomationView />;
       case 'tax_report':
         return <TaxReportView />;
       case 'ai_assistant':
@@ -82,12 +106,12 @@ const AppContent: React.FC = () => {
       <CustomerBuilderModal
         isOpen={activeModal === 'new_customer' || activeModal === 'edit_customer'}
         onClose={() => setActiveModal(null)}
-        initialCustomer={activeModal === 'edit_customer' ? modalData : null}
+        initialCustomer={activeModal === 'edit_customer' ? modalPayload : null}
       />
       <CustomerDetailModal
         isOpen={activeModal === 'customer_detail'}
         onClose={() => setActiveModal(null)}
-        customer={modalData}
+        customer={modalPayload}
       />
       <OpportunityBuilderModal
         isOpen={activeModal === 'new_opportunity'}
@@ -98,56 +122,74 @@ const AppContent: React.FC = () => {
       <QuoteBuilderModal
         isOpen={activeModal === 'new_quote' || activeModal === 'edit_quote'}
         onClose={() => setActiveModal(null)}
-        initialQuote={activeModal === 'edit_quote' ? modalData : null}
+        initialQuote={activeModal === 'edit_quote' ? modalPayload : null}
       />
       <InvoiceBuilderModal
         isOpen={activeModal === 'new_invoice' || activeModal === 'edit_invoice'}
         onClose={() => setActiveModal(null)}
-        initialInvoice={activeModal === 'edit_invoice' ? modalData : null}
+        initialInvoice={activeModal === 'edit_invoice' ? modalPayload : null}
       />
       <InvoicePrintModal
         isOpen={activeModal === 'invoice_print' || activeModal === 'quote_print'}
         onClose={() => setActiveModal(null)}
-        document={modalData}
+        document={modalPayload}
         type={activeModal === 'quote_print' ? 'quote' : 'invoice'}
       />
       <PaymentRecorderModal
-        isOpen={activeModal === 'record_payment'}
+        isOpen={activeModal === 'record_payment' || activeModal === 'new_payment'}
         onClose={() => setActiveModal(null)}
-        invoice={modalData}
+        invoice={modalPayload}
       />
 
       {/* Products & Inventory Modals */}
       <ProductBuilderModal
         isOpen={activeModal === 'new_product' || activeModal === 'edit_product'}
         onClose={() => setActiveModal(null)}
-        initialProduct={activeModal === 'edit_product' ? modalData : null}
+        initialProduct={activeModal === 'edit_product' ? modalPayload : null}
       />
       <StockMovementModal
         isOpen={activeModal === 'stock_movement'}
         onClose={() => setActiveModal(null)}
       />
 
-      {/* Purchases & Expenses Modals */}
+      {/* Purchases, Suppliers & Expenses Modals */}
       <SupplierBuilderModal
         isOpen={activeModal === 'new_supplier' || activeModal === 'edit_supplier'}
         onClose={() => setActiveModal(null)}
-        initialSupplier={activeModal === 'edit_supplier' ? modalData : null}
+        initialSupplier={activeModal === 'edit_supplier' ? modalPayload : null}
+      />
+      <PurchaseOrderBuilderModal
+        isOpen={activeModal === 'new_purchase_order'}
+        onClose={() => setActiveModal(null)}
       />
       <ExpenseBuilderModal
         isOpen={activeModal === 'new_expense'}
         onClose={() => setActiveModal(null)}
       />
 
-      {/* AI OCR Scanner */}
-      <OcrScannerModal
-        isOpen={activeModal === 'ai_ocr'}
+      {/* Operations, Tasks & Projects Modals */}
+      <ProjectBuilderModal
+        isOpen={activeModal === 'new_project'}
+        onClose={() => setActiveModal(null)}
+      />
+      <TaskBuilderModal
+        isOpen={activeModal === 'new_task'}
         onClose={() => setActiveModal(null)}
       />
 
-      {/* Projects Modal */}
-      <ProjectBuilderModal
-        isOpen={activeModal === 'new_project'}
+      {/* Documents & Automation Modals */}
+      <DocumentUploadModal
+        isOpen={activeModal === 'upload_document'}
+        onClose={() => setActiveModal(null)}
+      />
+      <AutomationRuleBuilderModal
+        isOpen={activeModal === 'new_automation_rule'}
+        onClose={() => setActiveModal(null)}
+      />
+
+      {/* AI OCR Scanner */}
+      <OcrScannerModal
+        isOpen={activeModal === 'ai_ocr'}
         onClose={() => setActiveModal(null)}
       />
     </AppShell>
