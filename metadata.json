@@ -1,0 +1,6 @@
+{
+  "name": "SahlBiz Business OS",
+  "description": "Système d'exploitation d'entreprise tout-en-un pour TPE & PME marocaines : CRM 360°, Devis & Facturation MAD, Trésorerie, Stocks, Projets, Achats, Rapports financiers et Assistant IA Gemini.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
