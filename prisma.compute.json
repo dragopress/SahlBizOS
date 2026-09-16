@@ -1,0 +1,12 @@
+{
+  "app": {
+    "name": "react-example",
+    "framework": "bun",
+    "entry": "server.ts",
+    "httpPort": 3000,
+    "build": {
+      "command": "bun run build",
+      "outputDirectory": "."
+    }
+  }
+}
